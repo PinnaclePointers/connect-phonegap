@@ -1,11 +1,8 @@
-<script type="text/javascript" src="js/deploy.js"></script>
-<script type="text/javascript" src="js/fileUtils.js"></script>
 <script type="text/javascript">
 //
 // Reload the app if server detects local change
 //
 (function() {
-
     var host = 'http://127.0.0.1:3000',
         url = host + '/__api__/autoreload';
 
@@ -29,8 +26,11 @@
                 var response = JSON.parse(this.responseText);
                 if (response.content.outdated) {
                     postStatus();
-                    window.phonegap.app.downloadZip({
-                        address: host
+                    window.phonegap.app.config.load(function(config){
+                        console.log('Download initiated');
+                        window.phonegap.app.downloadZip({
+                            address: 'http://' + config.address
+                        });                    
                     });
                 }
             }
@@ -38,6 +38,8 @@
         xhr.send();
     }
 
-    setInterval(checkForReload, 1000 * 3);
+    document.addEventListener("deviceready", function(){
+        setInterval(checkForReload, 1000 * 3);
+    }, false);
 })(window);
 </script>

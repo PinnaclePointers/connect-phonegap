@@ -26,12 +26,15 @@
                 var response = JSON.parse(this.responseText);
                 if (response.content.outdated) {
                     postStatus();
-                    window.phonegap.app.config.load(function(config){
-                        console.log('Download initiated');
-                        window.phonegap.app.downloadZip({
-                            address: 'http://' + config.address
-                        });                    
-                    });
+
+                    // this is ensure we don't duplicate a download when we first launch the app on device
+                    if(response.content.lastUpdated != 0){
+                        window.phonegap.app.config.load(function(config){
+                            window.phonegap.app.downloadZip({
+                                address: 'http://' + config.address
+                            });
+                        });
+                    }
                 }
             }
         }

@@ -145,9 +145,7 @@
         var sync = ContentSync.sync({ src: uri, id: 'phonegapdevapp', type: 'replace', copyCordovaAssets: true });
         
         sync.on('complete', function(data){
-            // TODO: need to set this to either first changing into the dir OR refresh for a reload
-            console.log('changing into ' + data.localPath + '/www/index.html');
-            window.location.href = data.localPath + '/www/index.html';
+            window.location.reload();
         });
 
         sync.on('error', function(e){
